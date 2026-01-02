@@ -1,0 +1,19 @@
+# -----------------------
+# Virtual Environments
+# -----------------------
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# -----------------------
+# Jupyter Notebooks
+# -----------------------
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# Jupyter Notebook metadata
+*.nbconvert.ipynb
+*.html
+*.pdf
