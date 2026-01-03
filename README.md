@@ -47,6 +47,7 @@ The dataset contains physicochemical properties of wine along with a quality sco
 
 
 
+
 ### Descriptive Statistics (`df.describe()`)
 
 #### 1. **Key Statistics Overview**
@@ -96,6 +97,32 @@ The dataset contains physicochemical properties of wine along with a quality sco
 - **Skewness suggests feature engineering**: Log-transform skewed features (e.g., `log(residual sugar +1)`).
 
 
+## Exploratory Data Analysis (EDA)
+
+### 1. Target Analysis (quality)
+
+### 2. Missing Values
+
+### 3. Numerical Features
+
+### 4. Top 20 Important Features
+
+### 5. EDA Conclusion
+
+
+
+## Modeling approach & metrics
+
+### Model Performance & Results
+
+### Hyperparameter Tuning
+
+
+### Final Verdict
+
+
+## Project Structure
+
 
 
 
@@ -127,3 +154,21 @@ source venv/bin/activate
 ```
 pip install -r requirements.txt
 ```
+
+
+.....
+
+
+
+### Run with Docker
+
+
+
+
+## API Usage Example
+
+
+## Cloud
+
+
+## Next Steps
