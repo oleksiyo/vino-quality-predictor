@@ -4,8 +4,11 @@
 venv/
 env/
 ENV/
+idea/
 .venv/
 .ENV/
+.idea/
+.vscode/
 
 # -----------------------
 # Jupyter Notebooks
@@ -17,3 +20,6 @@ ENV/
 *.nbconvert.ipynb
 *.html
 *.pdf
+*.xml
+*.iml
+*.pyc
