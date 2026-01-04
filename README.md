@@ -318,12 +318,13 @@ XGBoost is the final chosen model for deployment.
 ```
 vino-quality-predictor/
 │
-├── train.py               # Trains the model and saves model.bin + dv.bin
-├── predict.py             # Loads artifacts and performs a sample prediction
-├── serve.py               # FastAPI web service exposing /predict and /health
+├── .gitignore             # Git ignore file
 │
-├── model.bin              # Trained XGBoost regression model
-├── dv.bin                 # DictVectorizer for feature encoding
+├── train.py               # Trains the model and save as wine_quality_model.pkl
+├── predict.py             # Loads artifacts and performs a sample prediction
+├── serve.py               # Flask API web service exposing /predict and /health
+│
+├── wine_quality_model.pkl # Trained XGBoost regression model
 │
 ├── requirements.txt       # Python dependencies for local and Docker use
 ├── Dockerfile             # Containerization setup for the API
@@ -470,3 +471,30 @@ Example response:
 
 
 ## Next Steps
+
+1. Data Improvements
+
+- **Current dataset size**: Only ~1,143 samples (white wine variant) — very small for robust ML.
+- **Risks of small dataset**:
+- - High variance in performance across splits.
+- - Potential overfitting despite low test RMSE.
+- - Limited ability to capture rare quality levels (3 and 8).
+
+- **Strong recommendation**: Expand the dataset
+- - Combine red + white wine datasets (~6,000+ samples total).
+- - Add wine_type feature (red/white) or train separate models.
+- - Source: UCI Wine Quality (both red and white available).
+- - Expected benefits: More stable performance, better generalization, higher - - confidence in production use.
+
+
+2. Further Model Enhancements
+
+- Ensemble Random Forest + XGBoost (stacking or voting) for potential marginal gains.
+- Experiment with ordinal regression (e.g., Mord library or XGBoost with ordinal loss).
+- Add more domain-based features (e.g., free/total sulfur ratio, acidity-pH interactions).
+
+3. Add batch prediction and model metadata endpoints — extend the API with /predict_batch and /model/info for better usability.
+
+4. Error handler.
+
+5. Auto deploy to cloud.
