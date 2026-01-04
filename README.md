@@ -386,10 +386,16 @@ pip install -r requirements.txt
 ```
 
 
-4. Start the FastAPI service
+4. Start the Flask API service
 
 ```
-uvicorn serve:app --reload
+python serve.py
+```
+
+or with auto realod after code changes:
+
+```
+flask --app serve.py --debug run --host=0.0.0.0 --port=8000
 ```
 
 5. Health check
@@ -438,14 +444,24 @@ Example request:
 curl -X POST "http://localhost:8000/predict" \
      -H "Content-Type: application/json" \
      -d '{
-
+          "fixed_acidity": 7.0,
+          "volatile_acidity": 0.27,
+          "citric_acid": 0.36,
+          "residual sugar": 20.7,
+          "chlorides": 0.045,
+          "free_sulfur_dioxide": 45.0,
+          "total_sulfur_dioxide": 170.0,
+          "density": 1.001,
+          "ph": 3.0,
+          "sulphates": 0.45,
+          "alcohol": 8.8
          }'
 ```
 
 Example response:
 ```json
 {
-  "predicted_quality": 119744.14
+   "predicted_quality": 5.312
 }
 ```
 
