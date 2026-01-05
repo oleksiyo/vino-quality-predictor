@@ -518,6 +518,8 @@ Set the correct profile (if using multiple):
 export AWS_PROFILE=general
 ```
 
+> for Windows use - CMD: `set AWS_PROFILE=.....`
+
 #### Step 2: Push Image to ECR & Deploy Lambda
 
 **If it is first time**: In deploy.sh uncomment section **##run it only once**
@@ -527,6 +529,8 @@ Run the deployment script:
 ```bash
 bash aws/deploy.sh
 ```
+> for Windows use Git Bash or WSL
+
 > First-time only: Uncomment the ECR repository creation section in deploy.sh before the initial run.
 
 ![image](./images/009.png)
@@ -591,12 +595,6 @@ Your model is now live as a **serverless REST API** on **AWS Lambda**!
 - **Endpoint**: AWS Lambda function URL (enable if needed) or via API Gateway for custom domain.
 - **Scales automatically** — handles from 1 to thousands of requests.
 - **Cost-effective** — pay only for inference time.
-
-
-{screen}
-
-export AWS_PROFILE=iamadmin-general
-
 
 
 ## Next Steps
