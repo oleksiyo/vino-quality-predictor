@@ -330,11 +330,19 @@ vino-quality-predictor/
 ├── Dockerfile             # Containerization setup for the API
 │
 ├── notebook.ipynb         # Full EDA, modeling, tuning, and analysis
+├── aws/
+│   ├── Dockerfile          # Lambda-optimized Dockerfile
+│   ├── deploy.sh           # Script for pushing to ECR and updating Lambda
+│   ├── lambda_function.py  # Lambda code
+│   ├── test.py             # Local API test script
+│   └── invoke.py           # Remote Lambda invocation script
+│
 ├── images/                # All plots and visualizations used in README
 │   ├── 001.png
 │   ├── 002.png
 │   ├── 003.png
 │   ├── ...
+│
 ├── data/                   # Dataset files
 │   ├── WineQT.csv
 │
@@ -468,6 +476,127 @@ Example response:
 
 
 ## Cloud
+
+### Build Docker image for Lambda
+
+1. Build Docker image
+
+```docker
+docker build -t vino-quality-lambda -f aws/Dockerfile .
+```
+
+2. Run locally
+
+```docker
+docker run -it --rm -p 8080:8080  vino-quality-lambda
+```
+
+Local container running on port 8080:
+![image](./images/008.png)
+
+
+3. Test the local endpoint:
+
+```
+python3 aws/test.py
+```
+
+![image](./images/007.png)
+
+### Deploy to AWS
+
+
+#### Step 1: Verify AWS Account & Credentials
+
+```aws
+aws sts get-caller-identity
+```
+
+Set the correct profile (if using multiple):
+
+```aws
+export AWS_PROFILE=general
+```
+
+#### Step 2: Push Image to ECR & Deploy Lambda
+
+**If it is first time**: In deploy.sh uncomment section **##run it only once**
+
+Run the deployment script:
+
+```bash
+bash aws/deploy.sh
+```
+> First-time only: Uncomment the ECR repository creation section in deploy.sh before the initial run.
+
+![image](./images/009.png)
+
+#### Step 3: Verify in AWS Console
+- Go to Amazon ECR → Repositories → Check that your image is uploaded.
+
+![image](./images/010.png)
+
+- Go to AWS Lambda → Functions → Create function → **Container image**
+- - Function name: e.g., vino-quality-predictor
+- - Select image from ECR
+- - Select your Architecture (for IOS could be arm64)
+
+
+![image](./images/011.png)
+
+![image](./images/012.png)
+
+After creation:
+
+- Increase Timeout to 120 seconds (required for first cold start).
+
+
+#### Step 4: Test the Deployed Lambda
+
+- Create a test event (JSON payload) in the Lambda console.
+
+![image](./images/013.png)
+
+```json
+{
+  "wine": {
+    "fixed_acidity": 11.2,
+    "volatile_acidity": 0.28,
+    "citric_acid": 0.56,
+    "residual_sugar": 1.9,
+    "chlorides": 0.075,
+    "free_sulfur_dioxide": 17,
+    "total_sulfur_dioxide": 60,
+    "density": 0.998,
+    "ph": 3.16,
+    "sulphates": 0.58,
+    "alcohol": 9.8
+  }
+}
+```
+![image](./images/014.png)
+
+- Invoke remotely from your machine:
+
+
+```bash
+python3 aws/invoke.py
+```
+![image](./images/015.png)
+
+
+#### Final Result
+Your model is now live as a **serverless REST API** on **AWS Lambda**!
+
+- **Endpoint**: AWS Lambda function URL (enable if needed) or via API Gateway for custom domain.
+- **Scales automatically** — handles from 1 to thousands of requests.
+- **Cost-effective** — pay only for inference time.
+
+
+{screen}
+
+export AWS_PROFILE=iamadmin-general
+
 
 
 ## Next Steps
